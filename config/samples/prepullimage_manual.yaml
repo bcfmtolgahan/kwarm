@@ -1,0 +1,22 @@
+apiVersion: kwarm.io/v1alpha1
+kind: PrePullImage
+metadata:
+  name: nginx-manual
+  namespace: default
+spec:
+  image: nginx:1.25
+  nodes:
+    names:
+      - worker-1
+      - worker-2
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  retry:
+    maxAttempts: 3
+    backoffSeconds: 30
+  timeout: "10m"

@@ -1,0 +1,30 @@
+apiVersion: kwarm.io/v1alpha1
+kind: PrePullPolicy
+metadata:
+  name: production
+spec:
+  selector:
+    matchLabels:
+      kwarm.io/enabled: "true"
+      environment: production
+    namespaces:
+      - production
+      - staging
+  nodeSelector:
+    matchLabels:
+      node-type: worker
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  retry:
+    maxAttempts: 3
+    backoffSeconds: 30
+  timeout: "10m"
+  imagePullSecrets:
+    inherit: true
+    additional:
+      - name: private-registry-secret

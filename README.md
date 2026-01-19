@@ -20,6 +20,36 @@ helm install kwarm ./charts/kwarm -n kwarm-system --create-namespace
 kubectl apply -k config/default
 ```
 
+## Quick Start
+
+```bash
+# Install operator
+helm install kwarm ./charts/kwarm -n kwarm-system --create-namespace
+
+# Create a basic policy
+kubectl apply -f config/samples/prepullpolicy_basic.yaml
+
+# Label your deployment
+kubectl label deployment my-app kwarm.io/enabled=true
+```
+
+## Samples
+
+Sample configurations are available in `config/samples/`:
+
+| File | Description |
+|------|-------------|
+| `prepullpolicy_basic.yaml` | Minimal policy configuration |
+| `prepullpolicy_full.yaml` | Full policy with all options |
+| `prepullimage_manual.yaml` | Manual PrePullImage resource |
+| `deployment_example.yaml` | Example deployment with label |
+
+Apply all samples:
+
+```bash
+kubectl apply -k config/samples/
+```
+
 ## Usage
 
 ### 1. Create a PrePullPolicy
@@ -33,19 +63,6 @@ spec:
   selector:
     matchLabels:
       kwarm.io/enabled: "true"
-  nodeSelector:
-    matchLabels: {}
-  resources:
-    requests:
-      memory: "64Mi"
-      cpu: "100m"
-    limits:
-      memory: "256Mi"
-      cpu: "500m"
-  retry:
-    maxAttempts: 3
-    backoffSeconds: 30
-  timeout: "10m"
 ```
 
 ### 2. Label your Deployments
@@ -140,10 +157,10 @@ make run
 make test
 
 # Build image
-make docker-build IMG=kwarm:dev
+make docker-build IMG=ghcr.io/bcfmtolgahan/kwarm:dev
 
 # Deploy to cluster
-make deploy IMG=kwarm:dev
+make deploy IMG=ghcr.io/bcfmtolgahan/kwarm:dev
 ```
 
 ## License

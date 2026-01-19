@@ -1,9 +1,0 @@
-apiVersion: kwarm.kwarm.io/v1alpha1
-kind: PrePullImage
-metadata:
-  labels:
-    app.kubernetes.io/name: kwarm
-    app.kubernetes.io/managed-by: kustomize
-  name: prepullimage-sample
-spec:
-  # TODO(user): Add fields here

@@ -1,0 +1,8 @@
+apiVersion: kwarm.io/v1alpha1
+kind: PrePullPolicy
+metadata:
+  name: basic
+spec:
+  selector:
+    matchLabels:
+      kwarm.io/enabled: "true"
