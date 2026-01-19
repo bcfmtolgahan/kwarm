@@ -35,10 +35,10 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	kwarmv1alpha1 "github.com/kwarm/kwarm/api/v1alpha1"
-	"github.com/kwarm/kwarm/internal/controller"
-	_ "github.com/kwarm/kwarm/internal/metrics" // Register metrics
-	"github.com/kwarm/kwarm/internal/ratelimiter"
+	kwarmv1alpha1 "github.com/bcfmtolgahan/kwarm/api/v1alpha1"
+	"github.com/bcfmtolgahan/kwarm/internal/controller"
+	_ "github.com/bcfmtolgahan/kwarm/internal/metrics" // Register metrics
+	"github.com/bcfmtolgahan/kwarm/internal/ratelimiter"
 	// +kubebuilder:scaffold:imports
 )
 

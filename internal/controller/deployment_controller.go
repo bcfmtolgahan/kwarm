@@ -35,8 +35,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	kwarmv1alpha1 "github.com/kwarm/kwarm/api/v1alpha1"
-	"github.com/kwarm/kwarm/internal/metrics"
+	kwarmv1alpha1 "github.com/bcfmtolgahan/kwarm/api/v1alpha1"
+	"github.com/bcfmtolgahan/kwarm/internal/metrics"
 )
 
 const (

@@ -27,7 +27,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	kwarmv1alpha1 "github.com/kwarm/kwarm/api/v1alpha1"
+	kwarmv1alpha1 "github.com/bcfmtolgahan/kwarm/api/v1alpha1"
 )
 
 var _ = Describe("PrePullPolicy Controller", func() {

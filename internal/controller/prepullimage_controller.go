@@ -34,10 +34,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	kwarmv1alpha1 "github.com/kwarm/kwarm/api/v1alpha1"
-	"github.com/kwarm/kwarm/internal/metrics"
-	"github.com/kwarm/kwarm/internal/puller"
-	"github.com/kwarm/kwarm/internal/ratelimiter"
+	kwarmv1alpha1 "github.com/bcfmtolgahan/kwarm/api/v1alpha1"
+	"github.com/bcfmtolgahan/kwarm/internal/metrics"
+	"github.com/bcfmtolgahan/kwarm/internal/puller"
+	"github.com/bcfmtolgahan/kwarm/internal/ratelimiter"
 )
 
 const (

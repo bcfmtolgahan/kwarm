@@ -1,4 +1,4 @@
-module github.com/kwarm/kwarm
+module github.com/bcfmtolgahan/kwarm
 
 go 1.24.6
 

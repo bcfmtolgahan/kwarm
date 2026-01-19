@@ -32,7 +32,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	kwarmv1alpha1 "github.com/kwarm/kwarm/api/v1alpha1"
+	kwarmv1alpha1 "github.com/bcfmtolgahan/kwarm/api/v1alpha1"
 	// +kubebuilder:scaffold:imports
 )
 

@@ -14,7 +14,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.24'
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v4
@@ -28,16 +28,10 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.24'
 
       - name: Run tests
-        run: make test
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        with:
-          files: cover.out
-          fail_ci_if_error: false
+        run: go test ./internal/... -v
 
   build:
     runs-on: ubuntu-latest
@@ -46,13 +40,13 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.24'
 
       - name: Build
-        run: make build
+        run: go build -o manager cmd/main.go
 
       - name: Build Docker image
-        run: make docker-build IMG=ghcr.io/${{ github.repository }}:${{ github.sha }}
+        run: docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
 
   helm-lint:
     runs-on: ubuntu-latest

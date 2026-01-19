@@ -30,7 +30,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/kwarm/kwarm/test/utils"
+	"github.com/bcfmtolgahan/kwarm/test/utils"
 )
 
 // namespace where the project is deployed in

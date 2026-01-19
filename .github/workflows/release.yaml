@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.24'
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -38,6 +38,7 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -48,11 +49,16 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
 
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+      - name: Generate install manifest
+        run: |
+          mkdir -p dist
+          kubectl kustomize config/default > dist/install.yaml
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
-          version: latest
-          args: release --clean
+          files: dist/install.yaml
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -78,7 +84,7 @@ jobs:
 
       - name: Package Helm chart
         run: |
-          helm package charts/kwarm --version ${GITHUB_REF_NAME#v} --app-version ${GITHUB_REF_NAME#v}
+          helm package charts/kwarm --version ${GITHUB_REF_NAME#v} --app-version ${GITHUB_REF_NAME}
 
       - name: Upload Helm chart to release
         uses: softprops/action-gh-release@v1
