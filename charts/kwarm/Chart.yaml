@@ -1,0 +1,19 @@
+apiVersion: v2
+name: kwarm
+description: Kubernetes Image Pre-pull Operator - Warm your nodes before deployments
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - kubernetes
+  - operator
+  - image
+  - pre-pull
+  - deployment
+  - performance
+home: https://github.com/kwarm/kwarm
+sources:
+  - https://github.com/kwarm/kwarm
+maintainers:
+  - name: kwarm
+    url: https://github.com/kwarm

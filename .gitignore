@@ -1,0 +1,41 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+Dockerfile.cross
+
+# Test binary
+*.test
+
+# Coverage
+*.out
+coverage.html
+
+# Go workspace
+go.work
+go.work.sum
+
+# Generated files
+!vendor/**/zz_generated.*
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local files
+*.kubeconfig
+*.local
+.env
+.envrc
+
+# macOS
+.DS_Store
+
+# Debug
+__debug_bin*

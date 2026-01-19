@@ -1,0 +1,42 @@
+apiVersion: kwarm.io/v1alpha1
+kind: PrePullImage
+metadata:
+  name: myapp-abc12345
+  namespace: default
+  labels:
+    kwarm.io/deployment: myapp
+    kwarm.io/policy: default-policy
+spec:
+  # The container image to pull
+  image: "nginx:1.25"
+
+  # Optional: Image digest for verification
+  imageDigest: ""
+
+  # Target nodes - either by selector or specific names
+  nodes:
+    # Label selector for nodes
+    selector:
+      matchLabels: {}
+    # Or specific node names
+    names: []
+
+  # ImagePullSecrets for private registries
+  imagePullSecrets: []
+
+  # Resource limits for pull jobs
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+  # Retry policy
+  retry:
+    maxAttempts: 3
+    backoffSeconds: 30
+
+  # Timeout
+  timeout: "10m"

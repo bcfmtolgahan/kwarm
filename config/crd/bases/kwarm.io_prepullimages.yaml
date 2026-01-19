@@ -1,0 +1,385 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: prepullimages.kwarm.io
+spec:
+  group: kwarm.io
+  names:
+    kind: PrePullImage
+    listKind: PrePullImageList
+    plural: prepullimages
+    singular: prepullimage
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: Container image
+      jsonPath: .spec.image
+      name: Image
+      type: string
+    - description: Current phase
+      jsonPath: .status.phase
+      name: Phase
+      type: string
+    - description: Completed nodes
+      jsonPath: .status.summary.completed
+      name: Completed
+      type: integer
+    - description: Total nodes
+      jsonPath: .status.summary.total
+      name: Total
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PrePullImage is the Schema for the prepullimages API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PrePullImageSpec defines the desired state of PrePullImage
+            properties:
+              image:
+                description: Image is the container image to pull
+                type: string
+              imageDigest:
+                description: ImageDigest is the optional digest of the image for verification
+                type: string
+              imagePullSecrets:
+                description: ImagePullSecrets is a list of secret references for pulling
+                  the image
+                items:
+                  description: |-
+                    LocalObjectReference contains enough information to let you locate the
+                    referenced object inside the same namespace.
+                  properties:
+                    name:
+                      default: ""
+                      description: |-
+                        Name of the referent.
+                        This field is effectively required, but due to backwards compatibility is
+                        allowed to be empty. Instances of this type with an empty value here are
+                        almost certainly wrong.
+                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      type: string
+                  type: object
+                  x-kubernetes-map-type: atomic
+                type: array
+              nodes:
+                description: Nodes defines which nodes to pull the image to
+                properties:
+                  names:
+                    description: Names is a list of specific node names to target
+                    items:
+                      type: string
+                    type: array
+                  selector:
+                    description: Selector is a label selector to match nodes
+                    properties:
+                      matchExpressions:
+                        description: matchExpressions is a list of label selector
+                          requirements. The requirements are ANDed.
+                        items:
+                          description: |-
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                          properties:
+                            key:
+                              description: key is the label key that the selector
+                                applies to.
+                              type: string
+                            operator:
+                              description: |-
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                              type: string
+                            values:
+                              description: |-
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                              items:
+                                type: string
+                              type: array
+                              x-kubernetes-list-type: atomic
+                          required:
+                          - key
+                          - operator
+                          type: object
+                        type: array
+                        x-kubernetes-list-type: atomic
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                        type: object
+                    type: object
+                    x-kubernetes-map-type: atomic
+                type: object
+              resources:
+                description: Resources defines resource requirements for pull jobs
+                properties:
+                  claims:
+                    description: |-
+                      Claims lists the names of resources, defined in spec.resourceClaims,
+                      that are used by this container.
+
+                      This field depends on the
+                      DynamicResourceAllocation feature gate.
+
+                      This field is immutable. It can only be set for containers.
+                    items:
+                      description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                      properties:
+                        name:
+                          description: |-
+                            Name must match the name of one entry in pod.spec.resourceClaims of
+                            the Pod where this field is used. It makes that resource available
+                            inside a container.
+                          type: string
+                        request:
+                          description: |-
+                            Request is the name chosen for a request in the referenced claim.
+                            If empty, everything from the claim is made available, otherwise
+                            only the result of this request.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                    x-kubernetes-list-map-keys:
+                    - name
+                    x-kubernetes-list-type: map
+                  limits:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Limits describes the maximum amount of compute resources allowed.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                  requests:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Requests describes the minimum amount of compute resources required.
+                      If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                      otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                type: object
+              retry:
+                description: Retry defines retry policy for failed pulls
+                properties:
+                  backoffSeconds:
+                    default: 30
+                    description: BackoffSeconds is the number of seconds to wait between
+                      retries
+                    format: int32
+                    type: integer
+                  maxAttempts:
+                    default: 3
+                    description: MaxAttempts is the maximum number of retry attempts
+                    format: int32
+                    type: integer
+                type: object
+              timeout:
+                default: 10m
+                description: Timeout is the timeout for the pull operation
+                type: string
+            required:
+            - image
+            type: object
+          status:
+            description: PrePullImageStatus defines the observed state of PrePullImage
+            properties:
+              completionTime:
+                description: CompletionTime is when the pull operation completed
+                format: date-time
+                type: string
+              conditions:
+                description: Conditions represent the current state of the PrePullImage
+                items:
+                  description: Condition contains details for one aspect of the current
+                    state of this API Resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              nodeStatus:
+                description: NodeStatus contains the status for each target node
+                items:
+                  description: NodeStatus represents the pull status for a specific
+                    node
+                  properties:
+                    completedAt:
+                      description: CompletedAt is when the pull completed (successfully
+                        or with failure)
+                      format: date-time
+                      type: string
+                    duration:
+                      description: Duration is the time taken to complete the pull
+                      type: string
+                    error:
+                      description: Error contains error message if the pull failed
+                      type: string
+                    jobName:
+                      description: JobName is the name of the Job resource for this
+                        node
+                      type: string
+                    node:
+                      description: Node is the name of the node
+                      type: string
+                    retryCount:
+                      description: RetryCount is the number of retry attempts
+                      format: int32
+                      type: integer
+                    startedAt:
+                      description: StartedAt is when the pull started
+                      format: date-time
+                      type: string
+                    status:
+                      description: Status is the current status of the pull on this
+                        node
+                      enum:
+                      - Pending
+                      - Pulling
+                      - Completed
+                      - Failed
+                      type: string
+                  required:
+                  - node
+                  - status
+                  type: object
+                type: array
+              phase:
+                default: Pending
+                description: Phase is the current phase of the PrePullImage
+                enum:
+                - Pending
+                - InProgress
+                - Completed
+                - Failed
+                type: string
+              startTime:
+                description: StartTime is when the pull operation started
+                format: date-time
+                type: string
+              summary:
+                description: Summary contains summary statistics
+                properties:
+                  completed:
+                    description: Completed is the number of nodes that completed successfully
+                    format: int32
+                    type: integer
+                  failed:
+                    description: Failed is the number of nodes that failed
+                    format: int32
+                    type: integer
+                  pending:
+                    description: Pending is the number of nodes waiting to start
+                    format: int32
+                    type: integer
+                  pulling:
+                    description: Pulling is the number of nodes currently pulling
+                    format: int32
+                    type: integer
+                  total:
+                    description: Total is the total number of target nodes
+                    format: int32
+                    type: integer
+                required:
+                - completed
+                - failed
+                - pending
+                - pulling
+                - total
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

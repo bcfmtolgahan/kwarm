@@ -1,0 +1,121 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "kwarm.fullname" . }}-manager-role
+  labels:
+    {{- include "kwarm.labels" . | nindent 4 }}
+rules:
+# PrePullPolicy permissions
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullpolicies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullpolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+
+# PrePullImage permissions
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullimages
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullimages/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - kwarm.io
+  resources:
+  - prepullimages/status
+  verbs:
+  - get
+  - patch
+  - update
+
+# Deployment permissions
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+
+# Job permissions
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+
+# Node permissions
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+
+# Event permissions
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+
+# Coordination for leader election
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

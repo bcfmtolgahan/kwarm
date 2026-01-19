@@ -1,0 +1,19 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kwarm.fullname" . }}-metrics
+  namespace: {{ include "kwarm.namespace" . }}
+  labels:
+    {{- include "kwarm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.metrics.port }}
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    {{- include "kwarm.selectorLabels" . | nindent 4 }}
+    control-plane: controller-manager
+{{- end }}

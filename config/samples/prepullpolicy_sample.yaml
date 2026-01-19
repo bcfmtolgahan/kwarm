@@ -1,0 +1,40 @@
+apiVersion: kwarm.io/v1alpha1
+kind: PrePullPolicy
+metadata:
+  name: default-policy
+spec:
+  # Which Deployments to watch
+  selector:
+    # Label selector - Deployments with this label will be watched
+    matchLabels:
+      kwarm.io/enabled: "true"
+    # Optional: Only watch specific namespaces (empty = all namespaces)
+    namespaces: []
+
+  # Which nodes to pre-pull images to
+  nodeSelector:
+    matchLabels: {}  # empty = all nodes
+
+  # Resource limits for pull jobs
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+  # Retry policy
+  retry:
+    maxAttempts: 3
+    backoffSeconds: 30
+
+  # Timeout per image pull
+  timeout: "10m"
+
+  # ImagePullSecrets handling
+  imagePullSecrets:
+    # Inherit secrets from the source Deployment
+    inherit: true
+    # Additional secrets to use
+    additional: []

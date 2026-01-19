@@ -1,0 +1,90 @@
+# Default values for kwarm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/kwarm/kwarm
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Operator configuration
+config:
+  # Maximum number of concurrent image pulls cluster-wide
+  maxConcurrentPulls: 10
+  # Maximum number of concurrent image pulls per node
+  maxPullsPerNode: 2
+  # Default timeout for image pulls
+  defaultTimeout: "10m"
+  # TTL for completed PrePullImage resources
+  completedTTL: "1h"
+  # Log level: debug, info, warn, error
+  logLevel: "info"
+
+# Leader election
+leaderElection:
+  enabled: true
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Metrics configuration
+metrics:
+  enabled: true
+  port: 8080
+  # Set to false to use HTTP instead of HTTPS
+  secure: false
+
+# Health probe configuration
+healthProbe:
+  port: 8081
+
+# Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container security context
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 8443
+
+# CRD installation
+crds:
+  # Install CRDs as part of the Helm release
+  install: true

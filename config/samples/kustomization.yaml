@@ -1,0 +1,5 @@
+## Append samples of your project ##
+resources:
+- kwarm_v1alpha1_prepullpolicy.yaml
+- kwarm_v1alpha1_prepullimage.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
